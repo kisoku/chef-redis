@@ -1,4 +1,10 @@
 <% @config.each do |key, value| -%>
   <% next if value.nil? -%>
+  <% if node.redis.config.attribute?("configure_#{key}") -%>
+    <% if node.redis.config.send("configure_#{key}".to_sym) -%>
 <%= ChefRedis.template_format(key, value) %>
+    <% end -%>
+  <% else -%>
+<%= ChefRedis.template_format(key, value) %>
+  <% end -%>
 <% end %>
